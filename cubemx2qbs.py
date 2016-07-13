@@ -12,7 +12,7 @@ libs_ld_contents = """GROUP(
  libnosys.a
 )
 """
-
+STM32F1_Compiler_Flags = [ "-mthumb", "-mcpu=cortex-m3" ]
 STM32F2_Compiler_Flags = [ "-mthumb", "-mcpu=cortex-m3" ]
 STM32F4_Compiler_Flags = [ "-mthumb", "-mcpu=cortex-m4", "-mfloat-abi=hard", "-mfpu=fpv4-sp-d16" ]
 STM32F7_Compiler_Flags = [ "-mthumb", "-mcpu=cortex-m7", "-mfloat-abi=hard", "-mfpu=fpv5-sp-d16" ]
@@ -76,8 +76,10 @@ def parsePackage(pack) :
 	result += "    name: \"" + project_name + "\"\n"
 	result += "    cpp.includePaths : " + qbsWriteArray(includepaths, "        ") + "\n"
 	result += "    cpp.linkerScripts : [ \"" + processor_name + "_FLASH.ld\", \"LIBS.ld\"" + " ]\n"
-
-	if "STM32F2" in processor_name :
+	if "STM32F1" in processor_name :
+		result += "    cpp.commonCompilerFlags: " + qbsWriteArray(STM32F1_Compiler_Flags, "        ")
+		result += "    cpp.linkerFlags: " + qbsWriteArray(STM32F1_Compiler_Flags, "        ")
+	elif "STM32F2" in processor_name :
 		result += "    cpp.commonCompilerFlags: " + qbsWriteArray(STM32F2_Compiler_Flags, "        ")
 		result += "    cpp.linkerFlags: " + qbsWriteArray(STM32F2_Compiler_Flags, "        ")
 	elif "STM32F4" in processor_name :
